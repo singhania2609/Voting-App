@@ -24,7 +24,7 @@ const candidateSchema = new mongoose.Schema({
             },
             votedAt: {
                 type: Date,
-                default: Data.now()
+                default: Date.now()
             }
         }
     ],

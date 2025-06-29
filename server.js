@@ -8,13 +8,13 @@ app.use(bodyParser.json()); // req.body
 const PORT = process.env.PORT || 3000;
 
 
-
-
 // Import the router files
 const userRoutes = require('./routes/userRoutes');
+const candidatRoutes = require('./routes/candidateRoutes');
 
 // Use the routers
 app.use('/user',userRoutes);
+app.use('/candidate',candidatRoutes);
 
 
 
@@ -22,4 +22,4 @@ app.use('/user',userRoutes);
 //const PORT = 3000;
 app.listen(PORT,()=>{
     console.log('Listening on port 3000');
-})
+});

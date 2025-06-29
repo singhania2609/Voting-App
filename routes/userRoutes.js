@@ -78,7 +78,7 @@ router.get('/profile', jwtAuthMiddleware, async (req, res) => {
 
 router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
     try {
-        const userId = req.user.id; // Extract the id from the token
+        const userId = req.user; // Extract the id from the token
         const { currentPassword, newPassword } = req.body; // Extract current and new passwords from request body
 
         // Check if currentPassword and newPassword are present in the request body
