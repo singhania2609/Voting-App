@@ -1,0 +1,46 @@
+voting application
+
+what??
+A functionality where user can give vote to the given set of candicates
+
+
+Model?
+Routes?
+
+voting app functionality
+
+1.user sign in /sign up
+2.see the list of candicates
+3.vote one of the candicates,after voting user can't vote again
+4.there is a route which shows the list of candidates and their live votes counts sorted by their vote count
+5.user data must contain their one uqiue government id proof name:aadhar card number
+6.there should be one admin  who can only maintain the table of candicate and he can't able to vote at all
+7.user can change their password
+8.user can login only with adhar card number and passport
+9.admin can't vote to all
+
+
+==========================================
+
+Routes :=
+
+User Authentication :
+    /sinup: POST - Create a new user account.
+    /login : POST- Log in to an existing account. [with password/aadhar card number]
+
+voting:
+    /candicate: GET- Get the list of candicates.
+    /vote/:candidatesId:POST- vote for a specific candicate.
+
+vote Counts:
+    /vote/counts/: GET- Get the list of candicates sorted by their votes counts.
+
+User Profile:
+    /profile: GET -Get the user's profile information.
+    /profile/password: PUT - change the user's password
+
+Admin candicate Management:
+    /candicate: POST- create a new candicate.
+    /candicate/:candicateId: PUT -Update an existing candicate.
+    /candicate/:candicateId: DELETE -Delete a candicate from the list.
+
