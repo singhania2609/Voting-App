@@ -1,17 +1,17 @@
-const express=require('express') 
-const app=express();
+const express = require('express')
+const app = express();
+const db = require('./db');
+require('dotenv').config();
+
+const bodyParser = require('body-parser'); 
+app.use(bodyParser.json()); // req.body
+const PORT = process.env.PORT || 3000;
 
 
-
-
-//process.env.PORT->this is online server
-//3000 this start local server
-const bodyParser=require('body-parser');
-app.use(bodyParser.json());
-const PORT=process.env.PORT ||3000;
-
-
-
+// Import the router files
+const userRoutes = require('./routes/userRoutes');
+// Use the routers
+app.use('/user',userRoutes);
 
 
 // Start the server
