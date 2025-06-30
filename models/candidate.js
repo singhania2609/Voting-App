@@ -1,3 +1,4 @@
+const { uniqueId } = require('lodash');
 const mongoose =require('mongoose');
 
 
@@ -14,6 +15,11 @@ const candidateSchema = new mongoose.Schema({
     age: {
         type: Number,
         required: true
+    },
+    aadharCardNumber: {
+        type: Number,
+        required: true,
+        unique: true
     },
     votes: [    //to recode of voter which person votes with timing
         {
@@ -33,8 +39,6 @@ const candidateSchema = new mongoose.Schema({
         default:0
     }
 });
-
-
 
 // Create the user
 const Candidate= mongoose.model('Candidates',candidateSchema); 

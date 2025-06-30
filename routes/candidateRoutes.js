@@ -17,7 +17,7 @@ const chechkAdminRole= async(userID)=>{
 }
 
 
-// POST route to add candidate
+// POST route to add candidate ->only admin add candidate
 router.post('/', jwtAuthMiddleware,async (req, res) =>{
     try{
         if(!(await chechkAdminRole(req.user.id)))
@@ -32,6 +32,7 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
         // Save the new candidate to the database
         const response = await newCandidates.save();
         console.log('data saved');
+        
         res.status(200).json({response: response});
     }
     catch(err){
@@ -41,10 +42,10 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
 })
 
 
-
+//updated document  ///update in candidate only admin
 router.put('/:candidateId',jwtAuthMiddleware,async (req, res) => {
     try {
-        if(!chechkAdminRole(req.user.id))
+        if(!(await chechkAdminRole(req.user.id)))
             return res.status(403).json({message:'user has not admin role'});
         const candidateId = req.params.candidateId;
         const updatedCandidateData = req.body;
@@ -67,14 +68,17 @@ router.put('/:candidateId',jwtAuthMiddleware,async (req, res) => {
 });
 
 
+//admin can delete candidate
 router.delete('/:candidateId', jwtAuthMiddleware,async (req, res) => {
     try {
-        if(!chechkAdminRole(req.user.id))
+        if(!(await chechkAdminRole(req.user.id))){
+            console.log('User can not admin ,so we can not delete');
             return res.status(403).json({message:'user does not have admin role'});
+        }
+            
         const candidateId = req.params.candidateId;
        
-        const response= await User.findByIdAndDelete(candidateId);
-        
+        const response= await Candidate.findByIdAndDelete(candidateId);
         if (!response) {
             return res.status(403).json({ error: 'candidate not found' });
         }
