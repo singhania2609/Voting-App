@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('./../models/user');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
-// POST route to add a user
+// POST route to add a person
 router.post('/signup', async (req, res) =>{
     try{
         const data = req.body // Assuming the request body contains the User data
@@ -15,6 +15,19 @@ router.post('/signup', async (req, res) =>{
                 return res.status(400).json({ error: 'Admin already exists' });
             }
         }
+
+        // Validate Aadhar Card Number must have exactly 12 digit
+        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+            return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
+        }
+
+        // Check if a user with the same Aadhar Card Number already exists
+        const existingUser = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        if (existingUser) {
+            return res.status(400).json({ error: 'User with the same Aadhar Card Number already exists' });
+        }
+
+
         // Create a new User document using the Mongoose model
         const newUser = new User(data);
 
@@ -27,9 +40,7 @@ router.post('/signup', async (req, res) =>{
         }
         console.log(JSON.stringify(payload));
         const token = generateToken(payload);
-        console.log("Token is :",token);
-
-
+    
         res.status(200).json({response: response, token: token});
     }
     catch(err){
@@ -84,6 +95,8 @@ router.get('/profile', jwtAuthMiddleware, async (req, res) => {
     }
 })
 
+
+//User can change password 
 router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
     try {
         const userId = req.user; // Extract the id from the token

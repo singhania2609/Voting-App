@@ -26,6 +26,19 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
 
         const data = req.body // Assuming the request body contains the candidate data
 
+        
+        // Validate Aadhar Card Number must have exactly 12 digit
+        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+            return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
+        }
+        
+        // Check if a candidate with the same Aadhar Card Number already exists
+        const existingCandidate = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        if (existingCandidate) {
+            return res.status(400).json({ error: 'Candidate with the same Aadhar Card Number already exists' });
+        }
+
+
         // Create a new User document using the Mongoose model
         const newCandidates = new Candidate(data);
 
@@ -40,6 +53,7 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
         res.status(500).json({error: 'Internal Server Error'});
     }
 })
+
 
 
 //updated document  ///update in candidate only admin
@@ -94,11 +108,11 @@ router.delete('/:candidateId', jwtAuthMiddleware,async (req, res) => {
 
 
 //Let's start voting
-router.post('/vote/:candidateId',jwtAuthMiddleware,async(req,res)=>{
+router.post('/vote/:candidateID',jwtAuthMiddleware,async(req,res)=>{
     //no admin can vote
     //user can only vote once
 
-    candidateId =req.params.candidateId;
+    candidateId =req.params.candidateID;
     userId=req.user.id;
     try{
         //Find the candidate document with the specific candidateId
