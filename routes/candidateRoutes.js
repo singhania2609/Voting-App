@@ -47,6 +47,7 @@ router.put('/:candidateId',jwtAuthMiddleware,async (req, res) => {
     try {
         if(!(await chechkAdminRole(req.user.id)))
             return res.status(403).json({message:'user has not admin role'});
+        
         const candidateId = req.params.candidateId;
         const updatedCandidateData = req.body;
 
