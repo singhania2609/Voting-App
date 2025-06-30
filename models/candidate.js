@@ -1,6 +1,4 @@
-const { uniqueId } = require('lodash');
 const mongoose =require('mongoose');
-
 
 // Define the candidate schema
 const candidateSchema = new mongoose.Schema({

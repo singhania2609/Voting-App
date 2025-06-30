@@ -126,10 +126,10 @@ router.post('/vote/:candidateID',jwtAuthMiddleware,async(req,res)=>{
             return res.status(404).json({message: 'user not found'});
         }
         if(user.isVoted){
-            res.status(400).json({message:'You have already voted'});
+            return res.status(400).json({message:'You have already voted'});
         }
         if(user.role=='admin'){
-            res.status(403).json({message: 'admin is not allowed'});
+            return res.status(403).json({message: 'admin is not allowed'});
         }
         //Update the Candidate document to record the vote 
         candidate.votes.push({user: userId})
