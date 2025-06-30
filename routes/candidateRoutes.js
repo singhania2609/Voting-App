@@ -155,16 +155,20 @@ router.get('/vote/count',async (req,res)=>{
 });
 
 
-//candidate list
-router.get('/candidate',async(req,res)=>{
+// Get List of all candidates with only name and party fields
+router.get('/',async(req,res)=>{
     try{
-        //list of candidates
+        //Find all candidates in the collection
+        const candidates = await Candidate.find({}, 'name party -_id');
+
+        //Return the list as response
+        res.status(200).json(candidates);
     }
     catch(err){
         console.log(err);
         res.status(500).json({error:'Internal Server Error'});
     }
-})
+});
 
 
 module.exports = router;
